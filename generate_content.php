@@ -59,7 +59,7 @@ if (isset($case_data['error'])) {
 
 $contentArr = [];
 
-for($i = 0; $i < 2; $i++){
+for($i = 0; $i < 1; $i++){
   try {
     $content = [];
     $opinion = $case_data[$i]['opinion'];
