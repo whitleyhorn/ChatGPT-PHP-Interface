@@ -36,7 +36,7 @@ $request_body = array(
     array('role' => 'user', 'content' => 'You are writing a professional sales email to the potential client mentioned in the following notes. Address the email to the potential client directly. Notes: ' . $notes),
   ),
   'temperature' => 0.7,
-  'max_tokens' => 256,
+  'max_tokens' => 500,
 );
 
 $ch = curl_init();
@@ -60,6 +60,5 @@ foreach ($results['choices'] as $choice) {
   $outputs[] = $message;
 }
 
-
 // RESPOND
-echo implode("<br><br>", $outputs);
+echo json_encode(implode("<br><br>", $outputs));

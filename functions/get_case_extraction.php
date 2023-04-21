@@ -1,6 +1,20 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT']. '/functions/request_chatgpt.php');
 
+$contentType = $_SERVER['CONTENT_TYPE'];
+
+if ($contentType !== 'application/json') {
+  http_response_code(400);
+  echo json_encode(array('error' => 'Invalid content type'));
+  exit;
+}
+
+$data = json_decode(file_get_contents('php://input'), true);
+
+$opinion = $data['opinion'] ?? '';
+
+if($opinion) echo json_encode(get_case_extraction($opinion));
+
 function get_case_extraction($opinion){
   // Extract Relevant Info On Cases
   // Shorten opinion so we don't hit the maximum context length in ChatGPT

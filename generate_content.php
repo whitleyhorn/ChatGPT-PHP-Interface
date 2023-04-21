@@ -1,7 +1,5 @@
 <?php
 include($_SERVER['DOCUMENT_ROOT'] . '/functions/get_case_data.php');
-include($_SERVER['DOCUMENT_ROOT'] . '/functions/get_blog_post.php');
-include($_SERVER['DOCUMENT_ROOT'] . '/functions/get_case_extraction.php');
 
 // VALIDATE
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -57,22 +55,4 @@ if (isset($case_data['error'])) {
     die(json_encode(array('error' => $case_data['error'])));
 }
 
-$contentArr = [];
-
-for($i = 0; $i < 1; $i++){
-  try {
-    $content = [];
-    $opinion = $case_data[$i]['opinion'];
-    $extraction = get_case_extraction($opinion);
-    $post = get_blog_post($extraction);
-    $content['opinion'] = $opinion;
-    $content['extraction'] = $extraction;
-    $content['post'] = $post;
-    array_push($contentArr, $content);
-  } catch (Exception $e) {
-    $error_message = 'Error processing case ' . $i . ': ' . $e->getMessage();
-    array_push($contentArr, array('error' => $error_message));
-  }
-}
-
-echo json_encode($contentArr);
+echo json_encode($case_data);
