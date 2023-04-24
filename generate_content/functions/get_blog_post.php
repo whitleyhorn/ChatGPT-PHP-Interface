@@ -1,5 +1,5 @@
 <?php
-include_once($_SERVER['DOCUMENT_ROOT']. '/functions/request_chatgpt.php');
+include_once($_SERVER['DOCUMENT_ROOT']. '/generate_content/functions/request_chatgpt.php');
 
 $contentType = $_SERVER['CONTENT_TYPE'];
 
