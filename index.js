@@ -119,5 +119,11 @@ async function client(data, endpoint) {
     headers,
   });
 
-  return await response.json();
+  const responseData = await response.json();
+
+  if (response.status >= 400) {
+    throw new Error(responseData.error);
+  }
+
+  return responseData;
 }
