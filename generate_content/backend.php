@@ -1,5 +1,5 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT'] . '/functions/get_case_data.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/generate_content/functions/get_case_data.php');
 
 // VALIDATE
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

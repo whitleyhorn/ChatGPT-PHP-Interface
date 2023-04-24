@@ -2,58 +2,39 @@ const form = document.getElementById("input-form");
 const output = document.getElementById("output");
 let caseNum = 1;
 
-const updateInstructions = () => {
-  const type = document.getElementById("type").value;
-  const emailContainer = document.getElementById("email-container");
-  const contentContainer = document.getElementById("content-container");
-
-  emailContainer.style.display = type === "email" ? "block" : "none";
-  contentContainer.style.display = type === "content" ? "block" : "none";
-};
-
-document.getElementById("type").value = "content";
-updateInstructions();
-
 form.addEventListener("submit", handleSubmit);
 
 // *****
 async function handleSubmit(e) {
   e.preventDefault();
 
-  const type = form.type.value;
-  const input = form.input.value;
-  const url = type === "email" ? "generate_email.php" : "generate_content.php";
+  // clear the output div before appending new content
+  caseNum = 1;
+  output.innerHTML = "";
+
+  const backendUrl = "backend.php";
 
   const formData = new FormData();
-  formData.append("input", input);
+  formData.append("practice-area", form.practiceArea.value);
+  formData.append("jurisdiction", form.jurisdiction.value);
+  formData.append("county", form.county.value);
+  formData.append("keywords", form.keywords.value);
 
-  if (type === "content") {
-    const { practiceArea, jurisdiction, county, keywords } = form;
-    formData.append("practice-area", practiceArea.value);
-    formData.append("jurisdiction", jurisdiction.value);
-    formData.append("county", county.value);
-    formData.append("keywords", keywords.value);
-  }
-
-  let data;
+  let caseMatches;
 
   try {
-    data = await client(formData, url);
-    if (type === "email") {
-      output.innerHTML = data;
-      return;
-    }
+    caseMatches = await client(formData, backendUrl);
   } catch (error) {
     console.error(error);
     output.innerHTML = `An error occurred: ${error.message}`;
     return;
   }
 
-  if (data.length === 0)
+  if (caseMatches.length === 0)
     output.innerHTML =
       "No data available that matches the given parameters. Try being less specific or using fewer keywords.";
 
-  data.forEach(appendCase);
+  caseMatches.forEach(appendCase);
 }
 
 function appendCase(caseInfo) {
@@ -82,7 +63,10 @@ async function getSummary(btn, opinion, caseDiv) {
     );
     caseDiv.innerHTML += `<div><h4>Summary</h4><p>${summary}</p></div>
         <button class="get-blog-post">Get Blog Post</button>`;
-    btn.remove();
+    // Allow user to re-generate summary
+    // TODO: Fix, this isn't working
+    // But it may not even be necessary.
+    btn.disabled = false;
 
     const getBlogPostBtn = caseDiv.querySelector(".get-blog-post");
     getBlogPostBtn.addEventListener(
