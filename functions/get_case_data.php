@@ -137,5 +137,3 @@ function extract_case_data($response_data){
 
     return $cases;
 }
-?>
-
