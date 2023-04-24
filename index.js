@@ -49,6 +49,10 @@ async function handleSubmit(e) {
     return;
   }
 
+  if (data.length === 0)
+    output.innerHTML =
+      "No data available that matches the given parameters. Try being less specific or using fewer keywords.";
+
   data.forEach(appendCase);
 }
 
