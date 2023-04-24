@@ -121,7 +121,7 @@ function extract_case_data($response_data){
         try {
             $opinion = $case['casebody']['data']['opinions'][0]['text'];
         } catch (Exception $e) {
-            trigger_error('Warning: Error parsing opinion for case ' . $case['id'] . ': ' . $e->getMessage(), E_USER_WARNING);
+            // TODO: Should log an error here, but don't throw an error because we want to continue the loop even if there is no casebody for this particular case
             $case_text = '';
         }
 
